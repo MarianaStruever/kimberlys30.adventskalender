@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kimberlys Adventskalender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Karla:wght@400;600&display=swap">
+<style>
+/* Layout: a pink Christmas wall — garland of candy canes, firs and Santa hats on top, 24 little doors below in shuffled order, 24 is the big red one. */
+:root{
+  --pink:#f9cfe0; --pink-2:#f4b3cd; --rose:#e2588f; --red:#d42a3f; --white:#ffffff;
+  --fir:#1f5a3d; --fir-2:#2f7a54; --ink:#3d1828; --soft:#7a4a5e;
+  --f-display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+  --f-body:"Karla",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+html{background:var(--pink)}
+body{background:var(--pink);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  background-image:radial-gradient(circle,#ffffffaa 0 2px,transparent 2.5px),radial-gradient(circle,#ffffff66 0 1.5px,transparent 2px);
+  background-size:120px 120px,70px 70px;background-position:0 0,35px 50px}
+.wrap{max-width:1040px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+.garland{display:flex;justify-content:space-between;align-items:flex-end;gap:6px;overflow:hidden;height:86px}
+.garland svg{flex:0 0 auto;height:100%;width:auto}
+header{background:var(--white);border-radius:24px;padding:26px 28px;box-shadow:0 6px 0 var(--pink-2);display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+header::before,header::after{content:"";position:absolute;top:0;bottom:0;width:14px;background:repeating-linear-gradient(135deg,var(--red) 0 12px,var(--white) 12px 24px)}
+header::before{left:0} header::after{right:0}
+.eyebrow{margin:0;font-weight:600;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fir)}
+h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:clamp(2.1rem,6vw,3.8rem);line-height:1;color:var(--red);text-wrap:balance}
+h1 span{color:var(--rose)}
+.lede{margin:0;max-width:56ch;color:var(--ink)}
+.status{margin:0;align-self:flex-start;font-weight:600;background:var(--fir);color:var(--white);border-radius:999px;padding:8px 16px}
+.status strong{color:#ffd6e6}
+.preview{margin:0;font-size:.85rem;background:var(--red);color:var(--white);border-radius:10px;padding:6px 12px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.door{position:relative;aspect-ratio:3/4;border:0;border-radius:16px;background:var(--white);color:var(--ink);cursor:pointer;padding:0;overflow:hidden;font:inherit;
+  box-shadow:0 5px 0 var(--pink-2);transition:transform .18s ease}
+.door:nth-child(3n+2){background:#fff2f7}
+.door.big{grid-column:span 2;aspect-ratio:3/2;background:var(--red);color:var(--white)}
+.door:focus-visible{outline:3px solid var(--fir);outline-offset:3px}
+.face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.face::before{content:"";position:absolute;inset:8px;border:2px dashed var(--pink-2);border-radius:11px}
+.big .face::before{border-color:#ffffff88}
+.num{font-family:var(--f-display);font-weight:800;font-size:clamp(2.2rem,5.5vw,3.4rem);line-height:1;color:var(--rose)}
+.big .num{color:var(--white);font-size:clamp(2.8rem,7vw,4.6rem)}
+.date{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.big .date{color:#ffe1ec}
+.knob{position:absolute;right:14px;top:50%;width:9px;height:9px;border-radius:50%;background:var(--fir)}
+.big .knob{background:var(--white)}
+.tag{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--pink-2);color:var(--ink);white-space:nowrap}
+.door.locked{cursor:not-allowed}
+.door.locked .num{opacity:.55}
+.door.ready .tag{background:var(--fir);color:var(--white);animation:pulse 1.6s ease-in-out infinite}
+.door.ready:hover{transform:translateY(-3px) rotate(-1deg)}
+.door.open .face,.door.open .knob{opacity:0}
+.door img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.stamp{position:absolute;left:8px;bottom:8px;min-width:34px;height:34px;padding:0 6px;border-radius:999px;background:var(--red);color:var(--white);font:800 1rem var(--f-display);display:grid;place-items:center;border:2px solid var(--white)}
+@keyframes pulse{50%{transform:translateX(-50%) scale(1.08)}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+dialog{border:0;padding:0;background:transparent;color:var(--ink);max-width:min(960px,94vw);width:100%}
+dialog::backdrop{background:#3d1828cc}
+.sheet{background:var(--white);border-radius:20px;overflow:hidden;border:6px solid var(--white);box-shadow:0 0 0 6px var(--red)}
+.sheet img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:var(--pink);border-radius:12px}
+.sheet .txt{padding:14px 12px 10px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:center}
+.sheet .day{margin:0;font-size:.8rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--fir)}
+.sheet p.say{margin:0;grid-column:1;font-family:var(--f-display);font-weight:800;font-size:clamp(1.3rem,3.2vw,2rem);line-height:1.15;color:var(--red);text-wrap:balance}
+.close{grid-column:2;grid-row:1/3;border:0;border-radius:999px;background:var(--fir);color:var(--white);font:600 1rem var(--f-body);padding:10px 18px;cursor:pointer}
+.close:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+footer{display:flex;justify-content:center;gap:10px;align-items:center;color:var(--soft);font-size:.9rem}
+footer svg{height:34px;width:auto}
+@media (max-width:760px){.grid{grid-template-columns:repeat(4,1fr)}.door.big{grid-column:span 1;aspect-ratio:3/4}.garland{height:64px}}
+@media (max-width:460px){.grid{grid-template-columns:repeat(3,1fr);gap:10px}.sheet .txt{grid-template-columns:1fr}.close{grid-column:1;grid-row:auto;justify-self:start}header{padding:22px 24px}}
+@media (prefers-reduced-motion:reduce){.door,.door.ready .tag{transition:none;animation:none}.shake{animation:none}}
+</style>
+
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="stripe" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="16" height="16" fill="#ffffff"/><rect width="8" height="16" fill="#d42a3f"/></pattern>
+    <pattern id="stripeP" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="16" height="16" fill="#ffffff"/><rect width="8" height="16" fill="#e2588f"/></pattern>
+  </defs>
+  <symbol id="cane" viewBox="0 0 60 120"><path d="M20 115 V40 a18 18 0 0 1 36 0 v8" fill="none" stroke="#3d1828" stroke-width="18" stroke-linecap="round"/><path d="M20 115 V40 a18 18 0 0 1 36 0 v8" fill="none" stroke="url(#stripe)" stroke-width="12" stroke-linecap="round"/></symbol>
+  <symbol id="caneP" viewBox="0 0 60 120"><path d="M20 115 V40 a18 18 0 0 1 36 0 v8" fill="none" stroke="#3d1828" stroke-width="18" stroke-linecap="round"/><path d="M20 115 V40 a18 18 0 0 1 36 0 v8" fill="none" stroke="url(#stripeP)" stroke-width="12" stroke-linecap="round"/></symbol>
+  <symbol id="tree" viewBox="0 0 100 120"><rect x="42" y="96" width="16" height="20" rx="3" fill="#7a4a2e" stroke="#3d1828" stroke-width="3"/><path d="M50 6 L86 54 H68 L94 96 H6 L32 54 H14 Z" fill="#1f5a3d" stroke="#3d1828" stroke-width="4" stroke-linejoin="round"/><path d="M28 70 Q50 82 74 66" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/><circle cx="36" cy="84" r="5" fill="#d42a3f"/><circle cx="62" cy="80" r="5" fill="#e2588f"/><circle cx="50" cy="48" r="5" fill="#ffffff"/><circle cx="66" cy="58" r="4" fill="#d42a3f"/><path d="M50 0 l4 8 9 1 -7 6 2 9 -8 -5 -8 5 2 -9 -7 -6 9 -1 Z" fill="#ffd6e6" stroke="#3d1828" stroke-width="2.5"/></symbol>
+  <symbol id="hat" viewBox="0 0 120 100"><path d="M14 74 Q30 16 76 14 Q104 14 102 50 L96 60 Q90 34 72 34 Q56 36 50 74 Z" fill="#d42a3f" stroke="#3d1828" stroke-width="4" stroke-linejoin="round"/><circle cx="98" cy="60" r="12" fill="#ffffff" stroke="#3d1828" stroke-width="4"/><rect x="6" y="68" width="62" height="22" rx="11" fill="#ffffff" stroke="#3d1828" stroke-width="4"/></symbol>
+  <symbol id="hatP" viewBox="0 0 120 100"><path d="M14 74 Q30 16 76 14 Q104 14 102 50 L96 60 Q90 34 72 34 Q56 36 50 74 Z" fill="#e2588f" stroke="#3d1828" stroke-width="4" stroke-linejoin="round"/><circle cx="98" cy="60" r="12" fill="#ffffff" stroke="#3d1828" stroke-width="4"/><rect x="6" y="68" width="62" height="22" rx="11" fill="#ffffff" stroke="#3d1828" stroke-width="4"/></symbol>
+  <symbol id="flake" viewBox="0 0 60 60"><g stroke="#ffffff" stroke-width="5" stroke-linecap="round"><path d="M30 4 V56 M7.5 17 L52.5 43 M7.5 43 L52.5 17"/></g><circle cx="30" cy="30" r="6" fill="#e2588f"/></symbol>
+</svg>
+
+<div class="wrap">
+  <div class="garland" aria-hidden="true">
+    <svg viewBox="0 0 60 120"><use href="#cane"/></svg>
+    <svg viewBox="0 0 100 120"><use href="#tree"/></svg>
+    <svg viewBox="0 0 120 100"><use href="#hat"/></svg>
+    <svg viewBox="0 0 60 60" style="height:50%"><use href="#flake"/></svg>
+    <svg viewBox="0 0 60 120"><use href="#caneP"/></svg>
+    <svg viewBox="0 0 100 120"><use href="#tree"/></svg>
+    <svg viewBox="0 0 120 100"><use href="#hatP"/></svg>
+    <svg viewBox="0 0 60 60" style="height:50%"><use href="#flake"/></svg>
+    <svg viewBox="0 0 60 120"><use href="#cane"/></svg>
+    <svg viewBox="0 0 100 120"><use href="#tree"/></svg>
+  </div>
+
+  <header>
+    <p class="eyebrow">Advent 2026 · von Silke &amp; Mariana</p>
+    <h1>Kimberlys <span>Adventskalender</span></h1>
+    <p class="lede">Ab dem 1. Dezember lässt sich jeden Tag ein Türchen öffnen. Jedes Bild ist ein Schritt auf dem Weg zu deinem Geschenk. Schau genau hin und rate jeden Tag, was es sein könnte. Frühere Türchen kannst du jederzeit wieder ansehen. An Heiligabend wird das Rätsel gelöst.</p>
+    <p class="status" id="status"></p>
+  </header>
+  <p class="preview" id="pv" hidden>Vorschau: alle Türchen lassen sich öffnen. Der Link ohne #vorschau hält sich an die Daten.</p>
+  <main class="grid" id="grid" aria-label="Türchen"></main>
+  <footer>
+    <svg viewBox="0 0 120 100" aria-hidden="true"><use href="#hat"/></svg>
+    <span>Jedes Türchen öffnet sich ab seinem Tag im Dezember.</span>
+    <svg viewBox="0 0 60 120" aria-hidden="true"><use href="#caneP"/></svg>
+  </footer>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlgSay">
+  <div class="sheet">
+    <img id="dlgImg" alt="">
+    <div class="txt">
+      <p class="day" id="dlgDay"></p>
+      <p class="say" id="dlgSay"></p>
+      <button class="close" id="dlgClose" type="button">Schließen</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const DATA = [{"d": 1, "i": "5ea53e0c973a", "t": "SXJnZW5kd2FzIGxpZWd0IGluIGRlciBMdWZ0IOKApiBwYWNrIHNjaG9uIG1hbCBlaW4h"}, {"d": 2, "i": "a506fc174e62", "t": "T2huZSBkZW4gZ2VodCdzIG5pY2h0Lg=="}, {"d": 3, "i": "affa28a98084", "t": "U3Ryb20gZ2lidCdzIGRvcnQgYXVjaCDigJMgbnVyIGFuZGVycy4="}, {"d": 4, "i": "7205f41fe2ef", "t": "V2VyIHBhY2t0IGhpZXIgZWlnZW50bGljaCBmw7xyIGRyZWkgV29jaGVuPw=="}, {"d": 5, "i": "c067a283e1e3", "t": "RmxpZWdlbj8gRmxpZWdlbiE="}, {"d": 6, "i": "f41557c718f1", "t": "V2VyIHp1ZXJzdCBhbSBTY2hhbHRlciBpc3Qg4oCm"}, {"d": 7, "i": "4fa0a520a9a4", "t": "RGFzIFppZWwgYmxlaWJ0IG5vY2ggZ2VoZWltLg=="}, {"d": 8, "i": "6e2b589179ec", "t": "RXJ3aXNjaHQh"}, {"d": 9, "i": "506b334f1c46", "t": "RWluIGJpc3NjaGVuIEx1eHVzIG11c3Mgc2Vpbi4="}, {"d": 10, "i": "c08fd9285734", "t": "VW5zZXIgWmllbCBzdGVodCBhdWYgZGVyIFRhZmVsLiBOdXIgbGVpZGVyIGdlbmF1IGhpbnRlciB1bnNlcmVuIEvDtnBmZW4u"}, {"d": 11, "i": "4a9a41535f3e", "t": "RGFzIGlzdCBrZWluIGtsZWluZXIgRmxpZWdlciDigKY="}, {"d": 12, "i": "e2272bc07a40", "t": "Qml0dGUgYW5zY2huYWxsZW4h"}, {"d": 13, "i": "3a6984b24d96", "t": "VW5kIGxvcyE="}, {"d": 14, "i": "b11160421adc", "t": "V2Fzc2VyLCBXYXNzZXIsIFdhc3NlciDigKYgd2llIGxhbmdlIG5vY2g/"}, {"d": 15, "i": "3fd3a9e9a2af", "t": "U8O8w58gaW4gZGVuIFRhZyBzdGFydGVuLg=="}, {"d": 16, "i": "6e25247f96f8", "t": "V2FzIGzDpHVmdCBkZW5uIGRhPw=="}, {"d": 17, "i": "4bb1463e315c", "t": "RGllIFVociBnZWh0IGhpZXIgYW5kZXJzIOKApg=="}, {"d": 18, "i": "9595756f37eb", "t": "S2xlaW5lciBTcHJhY2h0ZXN0IGdlZsOkbGxpZz8="}, {"d": 19, "i": "969e153d6aec", "t": "RGllc2UgU3RhZHQgc2NobMOkZnQgd29obCBuaWUg4oCm"}, {"d": 20, "i": "9387d2aa0b45", "t": "RW5kbGljaCB3aWVkZXIgdmVyZWludCE="}, {"d": 21, "i": "c8e987c0b9b7", "t": "VGF4aSE="}, {"d": 22, "i": "dd936eab2f8c", "t": "R2FueiBzY2jDtm4gaG9jaCBoaWVyLg=="}, {"d": 23, "i": "84dbc0b6bcfe", "t": "TmEsIGtsaW5nZWx0J3M/"}, {"d": 24, "i": "d01edd1e5bbf", "t": "V2lyIGZsaWVnZW4gbmFjaCBORVcgWU9SSyEgRnJvaGUgV2VpaG5hY2h0ZW4sIEtpbWJlcmx5LiBEZWluZSBTaWxrZSAmIE1hcmlhbmE="}];
+const ORDER = [7,14,2,19,11,5,23,9,16,1,21,4,13,18,8,20,3,10,15,22,6,17,12,24];
+const YEAR = 2026;
+const dec = t => new TextDecoder().decode(Uint8Array.from(atob(t), c => c.charCodeAt(0)));
+const byDay = Object.fromEntries(DATA.map(x => [x.d, x]));
+const preview = () => location.hash === "#vorschau";
+const unlockDate = d => new Date(YEAR, 11, d, 0, 0, 0);
+const isOpenable = d => preview() || new Date() >= unlockDate(d);
+let opened = new Set();
+try { opened = new Set(JSON.parse(localStorage.getItem("kim-advent") || "[]")); } catch (e) {}
+const saveOpened = () => { try { localStorage.setItem("kim-advent", JSON.stringify([...opened])); } catch (e) {} };
+const src = d => "img/" + byDay[d].i + ".jpg";
+const fmt = d => d + ". Dezember";
+
+function render() {
+  document.getElementById("pv").hidden = !preview();
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  for (const d of ORDER) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "door" + (d === 24 ? " big" : "");
+    const can = isOpenable(d);
+    const isOpen = can && opened.has(d) && !preview();
+    b.classList.add(!can ? "locked" : isOpen ? "open" : "ready");
+    b.setAttribute("aria-label", "Türchen " + d + (can ? "" : ", öffnet am " + fmt(d)));
+    b.innerHTML = (isOpen ? '<img loading="lazy" alt="" src="' + src(d) + '"><span class="stamp">' + d + '</span>' : "") +
+      '<span class="face"><span class="num">' + d + '</span><span class="date">' + (d === 24 ? "Heiligabend" : d + ". Dez") + '</span></span>' +
+      '<span class="knob"></span>' +
+      (isOpen ? "" : '<span class="tag">' + (can ? "Öffnen" : "Noch zu") + '</span>');
+    b.addEventListener("click", () => openDoor(d, b));
+    grid.appendChild(b);
+  }
+  status();
+}
+
+function status() {
+  const el = document.getElementById("status");
+  const now = new Date();
+  const first = unlockDate(1);
+  if (preview()) { el.textContent = "Vorschau-Modus aktiv"; return; }
+  if (now < first) {
+    const days = Math.ceil((first - now) / 86400000);
+    el.innerHTML = "Noch <strong>" + days + (days === 1 ? " Tag" : " Tage") + "</strong> bis zum ersten Türchen";
+  } else if (now < unlockDate(25)) {
+    const today = Math.min(24, now.getDate());
+    el.innerHTML = "Heute ist Türchen <strong>" + today + "</strong> dran" + (today < 24 ? ". Was ist dein Tipp?" : ". Das letzte Türchen!");
+  } else {
+    el.textContent = "Alle 24 Türchen sind offen";
+  }
+}
+
+function openDoor(d, btn) {
+  if (!isOpenable(d)) {
+    btn.classList.remove("shake"); void btn.offsetWidth; btn.classList.add("shake");
+    return;
+  }
+  opened.add(d); saveOpened();
+  const img = document.getElementById("dlgImg");
+  img.src = src(d); img.alt = "Comic-Bild zu Türchen " + d;
+  document.getElementById("dlgDay").textContent = "Türchen " + d + " · " + fmt(d);
+  document.getElementById("dlgSay").textContent = dec(byDay[d].t);
+  const dlg = document.getElementById("dlg");
+  if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+  render();
+}
+const dlg = document.getElementById("dlg");
+document.getElementById("dlgClose").addEventListener("click", () => dlg.close ? dlg.close() : dlg.removeAttribute("open"));
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+window.addEventListener("hashchange", render);
+render();
+</script>
+
+</body>
+</html>
